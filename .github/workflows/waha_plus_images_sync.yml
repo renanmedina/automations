@@ -16,60 +16,27 @@ jobs:
       - name: Sync Latest Image
         uses: onichandame/docker-registry-sync-action@master
         with:
-          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/waha-plus:latest
+          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest
           source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
           source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
-          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/waha-plus:latest
+          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:latest
           target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
           target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
       - name: Sync gows Image
         uses: onichandame/docker-registry-sync-action@master
         with:
-          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/waha-plus:gows
+          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:gows
           source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
           source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
-          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/waha-plus:gows
+          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:gows
           target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
           target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
       - name: Sync noweb Image
         uses: onichandame/docker-registry-sync-action@master
         with:
-          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/waha-plus:noweb
+          source_repository:  ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:noweb
           source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
           source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
-          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/waha-plus:noweb
-          target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
-          target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
-  cpu_arm:
-    runs-on: ubuntu-24.04-arm
-    environment: production
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v4
-      - name: Sync Latest Image
-        uses: onichandame/docker-registry-sync-action@master
-        with:
-          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/waha-plus:latest-arm
-          source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
-          source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
-          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/waha-plus:latest-arm
-          target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
-          target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
-      - name: Sync gows Image
-        uses: onichandame/docker-registry-sync-action@master
-        with:
-          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/waha-plus:gows-arm 
-          source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
-          source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
-          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/waha-plus:gows-arm
-          target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
-          target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
-      - name: Sync noweb Image
-        uses: onichandame/docker-registry-sync-action@master
-        with:
-          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/waha-plus:noweb-arm
-          source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
-          source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
-          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/waha-plus:noweb-arm
+          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:noweb
           target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
           target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
