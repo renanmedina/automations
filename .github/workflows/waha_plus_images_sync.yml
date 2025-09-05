@@ -9,6 +9,7 @@ on:
 jobs:
   cpu_x86:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -43,6 +44,7 @@ jobs:
           docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:noweb
   cpu_arm:
     runs-on: ubuntu-24.04-arm
+    environment: production
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
