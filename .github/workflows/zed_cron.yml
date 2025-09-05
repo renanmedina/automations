@@ -1,4 +1,4 @@
-name: Daily release
+name: Zed Daily Release
 on:
   schedule:
     - cron: "0 3 * * *"
