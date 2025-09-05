@@ -12,62 +12,66 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
-      - name: Login to devlikeapro Docker HUb
+      - name: Login to Source Docker repository
         uses: docker/login-action@v3
         with:
-          username: ${{ vars.DEVLIKEAPRO_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DEVLIKEAPRO_DOCKERHUB_TOKEN }}
+          registry: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}
+          username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+          password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
       - name: Pull Waha Plus images
         run: |
-          docker pull devlikeapro/waha-plus:latest
-          docker pull devlikeapro/waha-plus:gows
-          docker pull devlikeapro/waha-plus:noweb
+          docker pull ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest
+          docker pull ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:gows
+          docker pull ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:noweb
       - name: Tag images
         run: |
-          docker tag devlikeapro/waha-plus:latest nanzinmedina/waha-plus:latest
-          docker tag devlikeapro/waha-plus:latest nanzinmedina/waha-plus:chromium
-          docker tag devlikeapro/waha-plus:gows nanzinmedina/waha-plus:gows
-          docker tag devlikeapro/waha-plus:noweb nanzinmedina/waha-plus:noweb
-      - name: Login to nanzinmedina Docker HUb
+          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:latest
+          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:chromium
+          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:gows ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:gows
+          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:noweb ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:noweb
+      - name: Login to Destination Docker HUb
         uses: docker/login-action@v3
         with:
-          username: ${{ vars.NANZINMEDINA_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.NANZINMEDINA_DOCKERHUB_TOKEN }}
-      - name: Push images to nanzinmedina Docker HUb
+          registry: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}
+          username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
+          password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
+      - name: Push images to Destination Docker HUb
         run: |
-          docker push nanzinmedina/waha-plus:latest
-          docker push nanzinmedina/waha-plus:chromium
-          docker push nanzinmedina/waha-plus:gows
-          docker push nanzinmedina/waha-plus:noweb
+          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:latest
+          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:chromium
+          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:gows
+          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:noweb
   cpu_arm:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
-      - name: Login to devlikeapro Docker HUb
+      - name: Login to Source Docker repository
         uses: docker/login-action@v3
         with:
-          username: ${{ vars.DEVLIKEAPRO_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DEVLIKEAPRO_DOCKERHUB_TOKEN }}
+          registry: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}
+          username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+          password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
       - name: Pull Waha Plus images
         run: |
-          docker pull devlikeapro/waha-plus:latest-arm
-          docker pull devlikeapro/waha-plus:gows-arm
-          docker pull devlikeapro/waha-plus:noweb-arm
+          docker pull ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest-arm
+          docker pull ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:gows-arm
+          docker pull ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:noweb-arm
       - name: Tag images
         run: |
-          docker tag devlikeapro/waha-plus:latest-arm nanzinmedina/waha-plus:latest-arm
-          docker tag devlikeapro/waha-plus:latest-arm nanzinmedina/waha-plus:chromium-arm
-          docker tag devlikeapro/waha-plus:gows-arm nanzinmedina/waha-plus:gows-arm
-          docker tag devlikeapro/waha-plus:noweb-arm nanzinmedina/waha-plus:noweb-arm
-      - name: Login to nanzinmedina Docker HUb
+          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest-arm ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:latest-arm
+          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest-arm ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:chromium-arm
+          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:gows-arm ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:gows-arm
+          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:noweb-arm ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:noweb-arm
+      - name: Login to Destination Docker HUb
         uses: docker/login-action@v3
         with:
-          username: ${{ vars.NANZINMEDINA_DOCKERHUB_USERNAME }}
-          password: ${{ secrets.NANZINMEDINA_DOCKERHUB_TOKEN }}
-      - name: Push images to nanzinmedina Docker HUb
+          registry: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}
+          username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
+          password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
+      - name: Push images to Destination Docker HUb
         run: |
-          docker push nanzinmedina/waha-plus:latest-arm
-          docker push nanzinmedina/waha-plus:chromium-arm
-          docker push nanzinmedina/waha-plus:gows-arm
-          docker push nanzinmedina/waha-plus:noweb-arm
+          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:latest-arm
+          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:chromium-arm
+          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:gows-arm
+          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:noweb-arm
