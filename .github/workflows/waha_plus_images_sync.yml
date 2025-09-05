@@ -6,10 +6,18 @@ on:
         description: "Release number"
         required: false
         type: string
+      arch_arm:
+        description: "ARM cpu architecture"
+        type: boolean
+      arch_x86:
+        description: "X86 cpu architecture"
+        type: boolean
+
 jobs:
   docker_hub_cpu_x86:
     runs-on: ubuntu-latest
     environment: production
+    if: ${{ inputs.arch_x86 }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -43,16 +51,17 @@ jobs:
   docker_hub_cpu_arm:
     runs-on: ubuntu-24.04-arm
     environment: production
+    if: ${{ inputs.arch_arm }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
       - name: Sync Latest Image
         uses: onichandame/docker-registry-sync-action@master
         with:
-          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest-arm
+          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:arm
           source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
           source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
-          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:latest-arm
+          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:arm
           target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
           target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
       - name: Sync gows Image
