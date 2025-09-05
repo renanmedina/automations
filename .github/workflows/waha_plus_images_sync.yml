@@ -7,7 +7,7 @@ on:
         required: false
         type: string
 jobs:
-  cpu_x86:
+  docker_hub_cpu_x86:
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -38,5 +38,38 @@ jobs:
           source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
           source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
           target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:noweb
+          target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
+          target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
+  docker_hub_cpu_arm:
+    runs-on: ubuntu-24.04-arm
+    environment: production
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Sync Latest Image
+        uses: onichandame/docker-registry-sync-action@master
+        with:
+          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest-arm
+          source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+          source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:latest-arm
+          target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
+          target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
+      - name: Sync gows Image
+        uses: onichandame/docker-registry-sync-action@master
+        with:
+          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:gows-arm
+          source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+          source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:gows-arm
+          target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
+          target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
+      - name: Sync noweb Image
+        uses: onichandame/docker-registry-sync-action@master
+        with:
+          source_repository:  ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:noweb-arm
+          source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+          source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:noweb-arm
           target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
           target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
