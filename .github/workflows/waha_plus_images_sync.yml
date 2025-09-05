@@ -13,67 +13,63 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
-      - name: Login to Source Docker repository
-        uses: docker/login-action@v3
+      - name: Sync Latest Image
+        uses: onichandame/docker-registry-sync-action@master
         with:
-          registry: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}
-          username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
-          password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
-      - name: Pull Waha Plus images
-        run: |
-          docker pull ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest
-          docker pull ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:gows
-          docker pull ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:noweb
-      - name: Tag images
-        run: |
-          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:latest
-          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:chromium
-          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:gows ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:gows
-          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:noweb ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:noweb
-      - name: Login to Destination Docker HUb
-        uses: docker/login-action@v3
+          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/waha-plus:latest
+          source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+          source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/waha-plus:latest
+          target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
+          target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
+      - name: Sync gows Image
+        uses: onichandame/docker-registry-sync-action@master
         with:
-          registry: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}
-          username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
-          password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
-      - name: Push images to Destination Docker HUb
-        run: |
-          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:latest
-          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:chromium
-          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:gows
-          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:noweb
+          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/waha-plus:gows
+          source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+          source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/waha-plus:gows
+          target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
+          target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
+      - name: Sync noweb Image
+        uses: onichandame/docker-registry-sync-action@master
+        with:
+          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/waha-plus:noweb
+          source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+          source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/waha-plus:noweb
+          target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
+          target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
   cpu_arm:
     runs-on: ubuntu-24.04-arm
     environment: production
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
-      - name: Login to Source Docker repository
-        uses: docker/login-action@v3
+      - name: Sync Latest Image
+        uses: onichandame/docker-registry-sync-action@master
         with:
-          registry: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}
-          username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
-          password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
-      - name: Pull Waha Plus images
-        run: |
-          docker pull ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest-arm
-          docker pull ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:gows-arm
-          docker pull ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:noweb-arm
-      - name: Tag images
-        run: |
-          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest-arm ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:latest-arm
-          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest-arm ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:chromium-arm
-          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:gows-arm ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:gows-arm
-          docker tag ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:noweb-arm ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:noweb-arm
-      - name: Login to Destination Docker HUb
-        uses: docker/login-action@v3
+          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/waha-plus:latest-arm
+          source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+          source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/waha-plus:latest-arm
+          target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
+          target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
+      - name: Sync gows Image
+        uses: onichandame/docker-registry-sync-action@master
         with:
-          registry: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}
-          username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
-          password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
-      - name: Push images to Destination Docker HUb
-        run: |
-          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:latest-arm
-          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:chromium-arm
-          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:gows-arm
-          docker push ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:noweb-arm
+          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/waha-plus:gows-arm 
+          source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+          source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/waha-plus:gows-arm
+          target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
+          target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
+      - name: Sync noweb Image
+        uses: onichandame/docker-registry-sync-action@master
+        with:
+          source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/waha-plus:noweb-arm
+          source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+          source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+          target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/waha-plus:noweb-arm
+          target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
+          target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
