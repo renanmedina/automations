@@ -6,6 +6,12 @@ on:
         description: "Release number"
         required: false
         type: string
+      docker_hub:
+       description: "Sync to docker hub repository?"
+       type: boolean
+      private_gitea:
+       description: "Sync to private gitea repository?"
+       type: boolean
       arch_arm:
         description: "ARM cpu architecture"
         type: boolean
@@ -17,7 +23,7 @@ jobs:
   docker_hub_cpu_x86:
     runs-on: ubuntu-latest
     environment: production
-    if: ${{ inputs.arch_x86 }}
+    if: ${{ inputs.arch_x86 && inputs.docker_hub }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -51,7 +57,7 @@ jobs:
   docker_hub_cpu_arm:
     runs-on: ubuntu-24.04-arm
     environment: production
-    if: ${{ inputs.arch_arm }}
+    if: ${{ inputs.arch_arm && inputs.docker_hub }}
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
@@ -82,3 +88,71 @@ jobs:
           target_repository: ${{ vars.DESTINATION_DOCKER_REPO_REGISTRY }}/${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}/waha-plus:noweb-arm
           target_username: ${{ vars.DESTINATION_DOCKER_REPO_USERNAME }}
           target_password: ${{ secrets.DESTINATION_DOCKER_REPO_TOKEN }}
+  private_gitea_cpu_x86:
+      runs-on: ubuntu-latest
+      environment: production
+      if: ${{ inputs.arch_x86 && inputs.private_gitea }}
+      steps:
+        - name: Checkout sources
+          uses: actions/checkout@v4
+        - name: Sync Latest Image
+          uses: onichandame/docker-registry-sync-action@master
+          with:
+            source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:latest
+            source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+            source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+            target_repository: ${{ vars.DESTINATION_GITEA_REPO_REGISTRY }}/${{ vars.DESTINATION_GITEA_REPO_USERNAME }}/waha-plus:latest
+            target_username: ${{ vars.DESTINATION_GITEA_REPO_USERNAME }}
+            target_password: ${{ secrets.DESTINATION_GITEA_REPO_TOKEN }}
+        - name: Sync gows Image
+          uses: onichandame/docker-registry-sync-action@master
+          with:
+            source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:gows
+            source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+            source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+            target_repository: ${{ vars.DESTINATION_GITEA_REPO_REGISTRY }}/${{ vars.DESTINATION_GITEA_REPO_USERNAME }}/waha-plus:gows
+            target_username: ${{ vars.DESTINATION_GITEA_REPO_USERNAME }}
+            target_password: ${{ secrets.DESTINATION_GITEA_REPO_TOKEN }}
+        - name: Sync noweb Image
+          uses: onichandame/docker-registry-sync-action@master
+          with:
+            source_repository:  ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:noweb
+            source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+            source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+            target_repository: ${{ vars.DESTINATION_GITEA_REPO_REGISTRY }}/${{ vars.DESTINATION_GITEA_REPO_USERNAME }}/waha-plus:noweb
+            target_username: ${{ vars.DESTINATION_GITEA_REPO_USERNAME }}
+            target_password: ${{ secrets.DESTINATION_GITEA_REPO_TOKEN }}
+  private_gitea_cpu_arm:
+      runs-on: ubuntu-24.04-arm
+      environment: production
+      if: ${{ inputs.arch_arm && inputs.private_gitea }}
+      steps:
+        - name: Checkout sources
+          uses: actions/checkout@v4
+        - name: Sync Latest Image
+          uses: onichandame/docker-registry-sync-action@master
+          with:
+            source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:arm
+            source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+            source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+            target_repository: ${{ vars.DESTINATION_GITEA_REPO_REGISTRY }}/${{ vars.DESTINATION_GITEA_REPO_USERNAME }}/waha-plus:arm
+            target_username: ${{ vars.DESTINATION_GITEA_REPO_USERNAME }}
+            target_password: ${{ secrets.DESTINATION_GITEA_REPO_TOKEN }}
+        - name: Sync gows Image
+          uses: onichandame/docker-registry-sync-action@master
+          with:
+            source_repository: ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/${{ vars.SOURCE_DOCKER_REPO_USERNAME }}/waha-plus:gows-arm
+            source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+            source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+            target_repository: ${{ vars.DESTINATION_GITEA_REPO_REGISTRY }}/${{ vars.DESTINATION_GITEA_REPO_USERNAME }}/waha-plus:gows-arm
+            target_username: ${{ vars.DESTINATION_GITEA_REPO_USERNAME }}
+            target_password: ${{ secrets.DESTINATION_GITEA_REPO_TOKEN }}
+        - name: Sync noweb Image
+          uses: onichandame/docker-registry-sync-action@master
+          with:
+            source_repository:  ${{ vars.SOURCE_DOCKER_REPO_REGISTRY }}/${{ vars.DESTINATION_GITEA_REPO_USERNAME }}/waha-plus:noweb-arm
+            source_username: ${{ vars.SOURCE_DOCKER_REPO_USERNAME }}
+            source_password: ${{ secrets.SOURCE_DOCKER_REPO_TOKEN }}
+            target_repository: ${{ vars.DESTINATION_GITEA_REPO_REGISTRY }}/${{ vars.DESTINATION_GITEA_REPO_USERNAME }}/waha-plus:noweb-arm
+            target_username: ${{ vars.DESTINATION_GITEA_REPO_USERNAME }}
+            target_password: ${{ secrets.DESTINATION_GITEA_REPO_TOKEN }}
